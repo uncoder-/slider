@@ -9,6 +9,7 @@
 	// 创建内部自用的公共方法（和scroll无关的，写在原型对象里也可以的）
 	var until = (function(){
 		var me = {};
+
 		var _elementStyle = document.createElement('div').style;
 		var _vendor = (function () {
 			var vendors = ['t', 'webkitT', 'MozT', 'msT', 'OT'];
@@ -35,7 +36,7 @@
 		me.transition = _transition;
 		me.translate3d = _translate3d;
 		// 获取当前时间
-		me.getTime = Date.now || function getTime () { return new Date().getTime(); };
+		me.getTime = Date.now || function getTime(){ return new Date().getTime(); };
 
 		return me;
 	})();
@@ -76,33 +77,35 @@
 			this.size = 0;
 			this.moveSize = 0;
 			this.direction = 0;
-			this.startY = event.changedTouches[0]['pageY'];
+			this.pageY = event.changedTouches[0]['pageY'];
 			this.startPosition = this.getComputedPosition();
 			this.startTime = until.getTime();
 		},
 		_move:function(event){
 			event.preventDefault();
-			this.size = event.changedTouches[0].pageY - this.startY;
+			// 新的滑动距离
+			this.size = event.changedTouches[0].pageY - this.pageY;
+			// 判定滑动方向?1向上:-1向下
 			this.direction = this.size > 0 ? 1:-1;
+			// 真实移动的距离＝已经滑动的距离＋新的滑动距离
 			this.moveSize = this.size + Number(this.startPosition[1]);
 			this.scroller['style']['transform'] = 'translate3d(0px,' + this.moveSize + 'px,0px)';
 		},
 		_end:function(event){
 			event.preventDefault();
-
 			this.endTime = until.getTime();
 			var moveSize = this.moveSize;
-			if(moveSize > 0) {
+			if(moveSize >= 0) {
 				moveSize = 0;
 			}else if (moveSize <= this.scrollHeight) {
 				moveSize = this.scrollHeight;
 			}
-			this.scroller['style']['transform'] = 'translate3d(0,' + moveSize + 'px,0)';
+			this.scroller['style']['transform'] = 'translate3d(0px,' + moveSize + 'px,0px)';
 			this.scroller['style']['transition'] = 'transform .3s cubic-bezier(0.333333, 0.666667, 0.666667, 1)';
 		},
 		getComputedPosition:function(){
 			var str = window.getComputedStyle(this.scroller, null);
-			var tr = str.getPropertyValue('-webkit-transform') || str.getPropertyValue('transform');
+			var tr = str.getPropertyValue('transform');
 			var values = tr.split('(')[1].split(')')[0].split(',');
 			return values.slice(4, 6);
 		},
