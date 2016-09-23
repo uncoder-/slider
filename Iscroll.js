@@ -48,7 +48,7 @@
 		// 滚动元素
 		this.scroller = this.wrapEl.children[0];
 		// 设置默认参数
-		this.scroller['style'][until['']+'transform'] = 'translate3d(0px,0px,0px)';
+		this.scroller['style']['transform'] = 'translate3d(0px,0px,0px)';
 		// 容器元素高度
 		var containerHeight = this.wrapEl.offsetHeight;
 		// 滚动元素的高度
@@ -107,7 +107,7 @@
 			var str = window.getComputedStyle(this.scroller, null);
 			var tr = str.getPropertyValue('transform');
 			var values = tr.split('(')[1].split(')')[0].split(',');
-			return values.slice(4,6);
+			return values.slice(4, 6);
 		},
 		handleEvent: function(event) {
 			switch ( event.type ) {
