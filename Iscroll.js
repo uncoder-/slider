@@ -107,7 +107,7 @@
 			var str = window.getComputedStyle(this.scroller, null);
 			var tr = str.getPropertyValue('transform');
 			var values = tr.split('(')[1].split(')')[0].split(',');
-			return values.slice(4, 6);
+			return values.slice(4,6);
 		},
 		handleEvent: function(event) {
 			switch ( event.type ) {
