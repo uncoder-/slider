@@ -20,7 +20,7 @@
 		// 滚动元素的高度
 		var scrollerHeight = this.scroller.offsetHeight;
 		// 可以滚动的高度
-		this.scrollHeight = Number((scrollerHeight - containerHeight) > 0 ? (scrollerHeight - containerHeight):0);
+		this.scrollHeight = containerHeight-scrollerHeight < 0 ? (containerHeight-scrollerHeight):0;
 		this._init();
 	}
 	// 覆盖原型
@@ -56,8 +56,8 @@
 			var moveSize = this.moveSize;
 			if(moveSize > 0) {
 				moveSize = 0;
-			}else if (moveSize < -this.scrollHeight) {
-				moveSize = -1*this.scrollHeight;
+			}else if (moveSize <= this.scrollHeight) {
+				moveSize = this.scrollHeight;
 			}
 			this.scroller['style']['transform'] = 'translate3d(0,' + moveSize + 'px,0)';
 			this.scroller['style']['transition'] = 'transform .3s cubic-bezier(0.333333, 0.666667, 0.666667, 1)';
